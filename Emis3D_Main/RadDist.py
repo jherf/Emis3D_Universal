@@ -3,6 +3,19 @@
 Created on Fri Jun 11 13:12:06 2021
 
 @author: bemst
+
+TODO:
+1. Remove the readjustment of PHI based on the injection location in evaluate_fast
+2. This will probably mess with the solver function
+3. Add new solver function for dual capability (this will probably create too many variables
+for the program to solve correctly...)
+4. For helical (and other radDists that change toroidally) update field line tracer to start
+field lines on the given R, z grid at that toroidal location. We can probably just copy these 
+field lines and rotate them toroidally to the other SPI location. BUT, this is not ideal since
+the field lines do change if you account for errors in coil currents. The error of this is probably
+smaller than the error with this solver though, so it shouldn't be a big deal. 
+
+
 """
 import json
 import math
@@ -15,14 +28,13 @@ from os.path import join
 import matplotlib.pyplot as plt
 import numpy as np
 from cherab.tools.emitters import RadiationFunction
+from Diagnostic import Synth_Brightness_Observer
 
 # raysect dependencies
 from raysect.core.math import translate
 from raysect.core.math.random import seed as raysectseed
 from raysect.optical.material import VolumeTransform
 from raysect.primitive import Cylinder
-
-from Diagnostic import Synth_Brightness_Observer
 from Util import RPhi_To_XY, XY_To_RPhi
 
 
